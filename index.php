@@ -1,5 +1,3 @@
-#!/usr/local/bin/php
-
 <html lang="en">
     <head>
 
@@ -33,7 +31,7 @@
                 <a class="nav-link" href="#">About</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Search Player</a>
+                <a class="nav-link" href="search.php">Search Player</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Compare Player</a>
