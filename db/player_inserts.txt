@@ -366,5 +366,4 @@ INSERT INTO Player (id, first_name, last_name, position, team, height_feet, heig
 INSERT INTO Player (id, first_name, last_name, position, team, height_feet, height_inches, weight_pounds) VALUES ('199', 'Shaquille', 'Harrison', 'G', '25', '6', '4', '190');
 INSERT INTO Player (id, first_name, last_name, position, team, height_feet, height_inches, weight_pounds) VALUES ('308', 'Alfonzo', 'McKinnie', 'F', '5', '6', '8', '215');
 INSERT INTO Player (id, first_name, last_name, position, team, height_feet, height_inches, weight_pounds) VALUES ('1', 'Alex', 'Abrines', 'G', '21', '6', '6', '200');
-INSERT INTO Player (id, first_name, last_name, position, team, height_feet, height_inches, weight_pounds) VALUES ('1', 'Alex', 'Abrines', 'G', '21', '6', '6', '200');
 INSERT INTO Player (id, first_name, last_name, position, team, height_feet, height_inches, weight_pounds) VALUES ('241', 'Amir', 'Johnson', 'C-F', '23', '6', '9', '240');

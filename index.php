@@ -54,35 +54,34 @@
     if ($link->connect_error) {
         die("Connection failed: " . $link->connect_error);
     }else{
-        echo "Connection made";
+        echo "Connection made<br>";
     }
 
-    /*CREATE TABLE Player (
-        id INT(10) NOT NULL,
-        first_name VARCHAR(30),
-        last_name VARCHAR(30),
-        position VARCHAR(5),
-        height_feet INT(1),
-        height_inches INT(2),
-        weight_pounds INT(3),
-        team INT(10),
-        PRIMARY KEY (id)
-    );
-    */
 
-    function showPlayers($link){
-        $sql = "SELECT first_name, last_name, position, height_feet, height_inches, weight_pounds FROM Player";
+    function testQuery($link){
+        $sql = 'SELECT s.pts, p.first_name, p.last_name, t.full_name 
+                FROM Stat s JOIN Player p ON s.player_id = p.id 
+                JOIN Team t ON p.team = t.id 
+                WHERE t.name = "Knicks"
+                ';
         $result = $link->query($sql);
+        
         if($result->num_rows > 0){
+            while($row = $result->fetch_assoc()){
+                print_r($row);
+                echo '<br>';
+            }
+        }
+        /*if($result->num_rows > 0){
             while($row = $result->fetch_assoc()){
                 echo "Name: " . $row["first_name"] ." ". $row["last_name"] . "\tPosition: " . $row["position"] 
                 ." Height, Weight:".  $row["height_feet"] ."'".$row["height_inches"] .'", '.$row["weight_pounds"]."Ibs<br>";
             }
         }else{
             echo "0 results";
-        }
+        }*/
     }
-    showPlayers($link);
+    testQuery($link);
     ?>
  </body>
 </html>
