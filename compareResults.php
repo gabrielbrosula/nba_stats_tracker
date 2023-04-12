@@ -58,7 +58,9 @@
     </nav>
 
     <!-- TODO: connect db to table -->
-
+    <div class="container pt-3 text-black rounded text-center">
+        <h2>Your NBA Player Comparison are shown below.</h2>
+    </div>
 
     <!-- pt-5 adds padding to the top; helps separate nav bar from player comparison page -->
     <div class="d-flex justify-content-center pt-5"> 
