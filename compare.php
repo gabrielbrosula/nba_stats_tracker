@@ -72,6 +72,7 @@
                 </div>  
         </form>
     </div>
+    <!-- TODO: add error cheecking for incorrect names entered -->
 
     <!-- Bootstrap 4 JS dependencies -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS-->

@@ -57,6 +57,9 @@
         </div>
     </nav>
 
+    <!-- TODO: connect db to table -->
+
+
     <!-- pt-5 adds padding to the top; helps separate nav bar from player comparison page -->
     <div class="d-flex justify-content-center pt-5"> 
          <!-- left image -->
