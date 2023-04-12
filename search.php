@@ -16,6 +16,28 @@
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">NBA Stats Tracker</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">About</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="search.php">Search Player</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="compare.php">Compare Players</a>
+            </li>
+            </ul>
+        </div>
+    </nav>
     <div class="container mt-5">
         <h1 class="mb-4">Search Results</h1>
         <p>Search players by their firstName, LastName, or Team</p>
@@ -58,7 +80,7 @@
             </tbody>
         </table>
     </div>
-
+    
     <script>
         $(document).ready(function () {
             $("#searchInput").on("keyup", function () {
@@ -70,4 +92,5 @@
         });
     </script>
     
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMxrn/ITSMAChbeE9eTc
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMxrn/ITSMAChbeE9eTc"></script>
+        

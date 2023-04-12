@@ -35,7 +35,7 @@
                 <a class="nav-link" href="search.php">Search Player</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Compare Players</a>
+                <a class="nav-link" href="compare.php">Compare Players</a>
             </li>
             </ul>
         </div>
