@@ -42,6 +42,7 @@ function playerInserts(){
           $height_feet = $player["height_feet"];
           $height_inches = $player["height_inches"];
           $weight_pounds = $player["weight_pounds"];
+          
           if($id && $first_name && $last_name && $position && $team_id && $height_feet && $height_inches && $weight_pounds){
             $sql_insert = "INSERT INTO Player (id, first_name, last_name, position, team, height_feet, height_inches, weight_pounds) VALUES ('$id', '$first_name', '$last_name', '$position', '$team_id', '$height_feet', '$height_inches', '$weight_pounds');";
             $sql_insert .= PHP_EOL;
