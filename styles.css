@@ -1,0 +1,22 @@
+HTML {
+    height: 100%;
+}
+BODY {
+    min-height: 100%;
+    background-image: url("assets/basketball_img1.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+MAIN {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    margin-top: 56px;
+}
+.navbar.bg-dark {
+    background-color: rgba(0, 0, 0, .85) !important;
+}
+.jumbotron {
+    background-color: rgba(0, 0, 0, .85) !important;
+    color: white;
+}

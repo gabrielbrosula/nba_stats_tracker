@@ -1,4 +1,3 @@
-#!/usr/local/bin/php
 
 <html lang="en">
     <head>
@@ -12,14 +11,14 @@
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
+        <!-- Group Project CSS -->
+        <link rel="stylesheet" href="styles.css">
         <title> NBA Stats Tracker </title>
         
     </head>
     <body>
 
-    <!-- TODO: Add the links to the other page -->
-
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="#">NBA Stats Tracker</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -29,18 +28,30 @@
             <li class="nav-item active">
                 <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="#">About</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Search Player</a>
+                <a class="nav-link" href="search.php">Search Player</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Compare Player</a>
+                <a class="nav-link" href="compare.php">Compare Players</a>
             </li>
             </ul>
         </div>
     </nav>
+
+    <!-- Rest of the webpage -->
+
+    <!-- Background Image -->
+    <main role="main" class="container">
+        <div class="jumbotron">
+            <h1 class="mb-3">Welcome to NBA Stats Tracker!</h1>
+            <p class="lead">Welcome to our website, where you can access comprehensive and up-to-date statistics for a variety of basketball players! Whether you're a coach, scout, or simply a basketball enthusiast, our website is the perfect resource to help you compare players and evaluate their performances.</p>
+            
+            <p class="lead">In addition to comparing individual players, you can also use our website to compare teams and track their performances over time. We offer a range of graphs and charts to help you visualize the data, making it easy to identify trends and patterns.</p>
+        </div>
+    </main>
     
         <!-- Bootstrap 4 JS dependencies -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS-->
