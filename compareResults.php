@@ -1,3 +1,4 @@
+#!/usr/local/bin/php
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,6 +18,9 @@
 </head>
 
 <style>
+    body {
+        background-image: none;
+    }
     td, th {
         text-align: center;
     }
@@ -56,7 +60,70 @@
             </ul>
         </div>
     </nav>
+    <?php
+        $player1= htmlspecialchars($_POST['player1']);
+        $p1Name = explode(' ', $player1); // split the first and last name by the space
 
+        $player2= htmlspecialchars($_POST['player2']);
+        $p2Name = explode(' ', $player2); // split the first and last name by the space
+
+        $link = new mysqli('mysql.cise.ufl.edu', 'v.torres1', '123456789abcd', 'NBASTATS');
+
+        if ($link->connect_error) {
+            die("Connection failed: " . $link->connect_error);
+        }
+        foreach ($p1Name as &$name) {
+            $name = ucfirst($name);
+        }
+        echo $p1Name[0] . $p1Name[1];
+        // $sql = "SELECT id FROM Player WHERE first_name = 'Terry' AND last_name = 'Rozier'";
+
+        // $result = mysqli_query($conn, $sql);
+
+        // // check if any results were returned
+        // if (mysqli_num_rows($result) > 0) {
+        //     // output data of each row
+        //     while($row = mysqli_fetch_assoc($result)) {
+        //         $player_id = $row["id"];
+        //         echo $row["id"] . "<br>";
+        //     }
+        // } 
+        $sql = "SELECT p.first_name, p.last_name, p.id
+        FROM Stat s JOIN Player p ON s.player_id = p.id 
+        WHERE p.first_name = \"$p1Name[0]\" AND p.last_name = \"$p1Name[1]\"";
+
+        // $sql = 'SELECT p.first_name, p.last_name, p.id
+        //         FROM Stat s JOIN Player p ON s.player_id = p.id 
+        //         WHERE p.first_name = "Kevin" AND p.last_name ="Durant"
+        //         ';
+        $result = $link->query($sql);
+        
+        if($result->num_rows > 0) {
+            // Get the player ID
+            $row = mysqli_fetch_assoc($result);
+            $playerID = $row['id'];
+            echo "$playerID <br>";
+
+            // SELECT query to get entire stats row
+            $intPID = intval($playerID);
+            // $sql = "SELECT * FROM Stat WHERE player_id = " . $intPID;
+            $sql = "SELECT * FROM Stat WHERE player_id = \"140\"";
+
+            echo $sql;
+            $result = mysqli_query($conn, $sql);
+
+            // Check if the query was successful
+            if (mysqli_num_rows($result) > 0) {
+                // Output the rows
+                while ($row = mysqli_fetch_assoc($result)) {
+                    print_r($row);
+                }
+            }
+            else {
+                echo "No stats found for player with ID $playerID";
+            }
+        }
+    ?>
     <!-- TODO: connect db to table -->
     <div class="container pt-3 text-black rounded text-center">
         <h2>Your NBA Player Comparison are shown below.</h2>
