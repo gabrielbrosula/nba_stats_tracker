@@ -60,71 +60,7 @@
             </ul>
         </div>
     </nav>
-    <?php
-        $player1= htmlspecialchars($_POST['player1']);
-        $p1Name = explode(' ', $player1); // split the first and last name by the space
 
-        $player2= htmlspecialchars($_POST['player2']);
-        $p2Name = explode(' ', $player2); // split the first and last name by the space
-
-        $link = new mysqli('mysql.cise.ufl.edu', 'v.torres1', '123456789abcd', 'NBASTATS');
-
-        if ($link->connect_error) {
-            die("Connection failed: " . $link->connect_error);
-        }
-        foreach ($p1Name as &$name) {
-            $name = ucfirst($name);
-        }
-        echo $p1Name[0] . $p1Name[1];
-        // $sql = "SELECT id FROM Player WHERE first_name = 'Terry' AND last_name = 'Rozier'";
-
-        // $result = mysqli_query($conn, $sql);
-
-        // // check if any results were returned
-        // if (mysqli_num_rows($result) > 0) {
-        //     // output data of each row
-        //     while($row = mysqli_fetch_assoc($result)) {
-        //         $player_id = $row["id"];
-        //         echo $row["id"] . "<br>";
-        //     }
-        // } 
-        $sql = "SELECT p.first_name, p.last_name, p.id
-        FROM Stat s JOIN Player p ON s.player_id = p.id 
-        WHERE p.first_name = \"$p1Name[0]\" AND p.last_name = \"$p1Name[1]\"";
-
-        // $sql = 'SELECT p.first_name, p.last_name, p.id
-        //         FROM Stat s JOIN Player p ON s.player_id = p.id 
-        //         WHERE p.first_name = "Kevin" AND p.last_name ="Durant"
-        //         ';
-        $result = $link->query($sql);
-        
-        if($result->num_rows > 0) {
-            // Get the player ID
-            $row = mysqli_fetch_assoc($result);
-            $playerID = $row['id'];
-            echo "$playerID <br>";
-
-            // SELECT query to get entire stats row
-            $intPID = intval($playerID);
-            // $sql = "SELECT * FROM Stat WHERE player_id = " . $intPID;
-            $sql = "SELECT * FROM Stat WHERE player_id = \"140\"";
-
-            echo $sql;
-            $result = mysqli_query($conn, $sql);
-
-            // Check if the query was successful
-            if (mysqli_num_rows($result) > 0) {
-                // Output the rows
-                while ($row = mysqli_fetch_assoc($result)) {
-                    print_r($row);
-                }
-            }
-            else {
-                echo "No stats found for player with ID $playerID";
-            }
-        }
-    ?>
-    <!-- TODO: connect db to table -->
     <div class="container pt-3 text-black rounded text-center">
         <h2>Your NBA Player Comparison are shown below.</h2>
     </div>
@@ -135,38 +71,100 @@
         <div class="col-md-2 text-center">
             <img src="playerImages/kevinDurant.png" class="img-fluid">
         </div>
+        <?php
+            $player1= htmlspecialchars($_POST['player1']);
+            $p1Name = explode(' ', $player1); // split the first and last name by the space
+    
+            $player2= htmlspecialchars($_POST['player2']);
+            $p2Name = explode(' ', $player2); // split the first and last name by the space
+    
+            $link = new mysqli('mysql.cise.ufl.edu', 'v.torres1', '123456789abcd', 'NBASTATS');
+    
+            if ($link->connect_error) {
+                die("Connection failed: " . $link->connect_error);
+            }
+            foreach ($p1Name as &$name) {
+                $name = ucfirst($name);
+            }
 
+            // echo "$p2Name[0] $p2Name[1] <br>";
+
+            $sql = "SELECT p.first_name, p.last_name, p.id
+            FROM Stat s JOIN Player p ON s.player_id = p.id 
+            WHERE p.first_name = \"$p1Name[0]\" AND p.last_name = \"$p1Name[1]\"";
+
+            $sql2 = "SELECT p.first_name, p.last_name, p.id
+            FROM Stat s JOIN Player p ON s.player_id = p.id 
+            WHERE p.first_name = \"$p2Name[0]\" AND p.last_name = \"$p2Name[1]\"";
+            
+            $result = $link->query($sql);
+            $result2 = $link->query($sql2);
+
+            if($result->num_rows > 0) {
+                $row = mysqli_fetch_assoc($result);  // get the player1 ID
+                $row2 = mysqli_fetch_assoc($result2);  // get the player2 ID
+
+                $player1ID = (int)$row['id'];
+                $player2ID = (int)$row2['id'];
+
+                $sql = "SELECT * FROM Stat WHERE player_id=$player1ID";
+                $sql2 = "SELECT * FROM Stat WHERE player_id=$player2ID";
+
+                $result = $link->query($sql);
+                $result2 = $link->query($sql2);
+
+                if (mysqli_num_rows($result) > 0) {  // check if any results were returned for p1
+                    while($row = mysqli_fetch_assoc($result)) {  // output data of each row
+                        $player1_id = $row["player_id"];
+                        $p1ppg = $row["pts"];
+                        $p1Rpg = $row["reb"];
+                        $p1Apg = $row["ast"];
+                        $p1Fg = $row["fg_pct"];
+                    }
+                } 
+                if (mysqli_num_rows($result2) > 0) {  // check if any results were returned for p2
+                    while($row2 = mysqli_fetch_assoc($result2)) {  // output data of each row
+                        $player2_id = $row2["player_id"];
+                        $p2ppg = $row2["pts"];
+                        $p2Rpg = $row2["reb"];
+                        $p2Apg = $row2["ast"];
+                        $p2Fg = $row2["fg_pct"];
+                    }
+                } 
+            }
+        ?>
         <div class="col-md-6">
-            <div class="container">
-                <table class="table table-hover text-black ">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Kevin Durant</th>
-                            <th>Lebron James</th>
-                        </tr>
-                    </thead>
+        <div class="container">
+            <table class="table table-hover text-black ">
+                <thead>
                     <tr>
-                        <td>PPG</td>
-                        <td>29.1</td>
-                        <td>28.9</td>
+                        <th></th>
+                        <th><?php echo "$p1Name[0]  $p1Name[1]"; ?></th>
+                        <th><?php echo "$p2Name[0] $p2Name[1]"; ?></th>
                     </tr>
-                    <tr>
-                        <td>RPG</td>
-                        <td>6.7</td>
-                        <td>8.3</td>
-                    </tr>
-                    <tr>
-                        <td>APG</td>
-                        <td>5.0</td>
-                        <td>6.8</td>
-                    </tr>
-                    <tr>
-                        <td>FG%</td>
-                        <td>56.0%</td>
-                        <td>50.0%</td>
-                    </tr>
-                </table>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>PPG</td>
+                    <td><?php echo $p1ppg; ?></td>
+                    <td><?php echo $p2ppg; ?></td>
+                </tr>
+                <tr>
+                    <td>RPG</td>
+                    <td><?php echo $p1Rpg; ?></td>
+                    <td><?php echo $p2Rpg; ?></td>
+                </tr>
+                <tr>
+                    <td>APG</td>
+                    <td><?php echo $p1Apg; ?></td>
+                    <td><?php echo $p2Apg; ?></td>
+                </tr>
+                <tr>
+                    <td>FG%</td>
+                    <td><?php echo $p1Fg * 100; ?></td>
+                    <td><?php echo $p2Fg * 100; ?></td>
+                </tr>
+            </table>
         </div>
     </div>
     <!-- right image -->

@@ -1,3 +1,4 @@
+#!/usr/local/bin/php
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,7 +52,7 @@
         </div>
         <h2>Welcome to the NBA Player Comparison page.</h2>
     </div>
-
+    <!-- TODO: add in some type of validation to make sure that the spelling of the name is correct. Maybe some type of prepopulation -->
     <div class="container p-3 my-5 text-black rounded text-center">
         <form action="compareResults.php" class="form-vertical" method="post">
             <div class="row">
