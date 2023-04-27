@@ -16,7 +16,7 @@
         <title> NBA Stats Tracker </title>
         
     </head>
-    <body>
+    <body id="home">
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="#">NBA Stats Tracker</a>
