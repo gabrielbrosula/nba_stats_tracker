@@ -1,4 +1,4 @@
-
+#!/usr/local/bin/php
 <html lang="en">
     <head>
 
@@ -36,6 +36,9 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="compare.php">Compare Players</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="explore.php">Explore Teams</a>
             </li>
             </ul>
         </div>

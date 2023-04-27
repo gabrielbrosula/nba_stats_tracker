@@ -1,6 +1,5 @@
-<?php
-// TODO:
-?>
+#!/usr/local/bin/php
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,6 +34,9 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="compare.php">Compare Players</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="explore.php">Explore Teams</a>
             </li>
             </ul>
         </div>
