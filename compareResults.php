@@ -1,4 +1,10 @@
 #!/usr/local/bin/php
+<?php 
+if (empty($_POST['player1']) || empty($_POST['player2'])) { 
+    header('Location: compare.php?error=invalid_names');
+    exit; 
+} 
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -153,7 +159,18 @@
         ?>
         <!-- left image -->
         <div class="col-md-2 text-center">
-            <img src="playerImages/kevinDurant.png" class="img-fluid">
+            <?php 
+                $file_handle = fopen("images/nba_headshots.csv", "r");
+                $tempName = strtolower($p1Name[0] . " " . $p1Name[1]);
+                while (($row = fgetcsv($file_handle)) !== false) {
+                    if ($row[0] == $tempName) {  // check if the name in this row matches the user input
+                        $image2Src = $row[1];
+                        break;
+                    }
+                }
+                fclose($file_handle);
+            ?>
+            <img src="<?php echo $image2Src ?>"class="img-fluid" alt="Player 1 image">
             <h2> <?php echo $p1TeamName; ?> </h2>
             <?php echo $player1Position?> 
         </div>
@@ -193,7 +210,18 @@
     </div>
     <!-- right image -->
     <div class="col-md-2 text-center">
-        <img src="playerImages/lebronJames.png" class="img-fluid">
+        <?php 
+            $file_handle = fopen("images/nba_headshots.csv", "r");
+            $tempName = strtolower($p2Name[0] . " " . $p2Name[1]);
+            while (($row = fgetcsv($file_handle)) !== false) {
+                if ($row[0] == $tempName) {  // check if the name in this row matches the user input
+                    $image2Src = $row[1];
+                    break;
+                }
+            }
+            fclose($file_handle);
+        ?>
+        <img src="<?php echo $image2Src ?>"class="img-fluid" alt="Player 2 image">
         <!-- add nba logo to the top right of the right player image -->
         <img src="nbaLogo.png" class="position-absolute top-0 end-0" style="width: 55px; height: 45px;">
         <h2> <?php echo $p2TeamName; ?> </h2>
