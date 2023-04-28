@@ -1,3 +1,4 @@
+#!/usr/local/bin/php
 <?php
 // TODO:
 ?>
@@ -28,13 +29,13 @@
                 <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link active" href="search.php">Search Player</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="compare.php">Compare Players</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="explore.php">Explore Teams</a>
             </li>
             </ul>
         </div>

@@ -56,9 +56,6 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
                 <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="search.php">Search Player</a>
             </li>
             <li class="nav-item">
@@ -118,8 +115,8 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
                 $p1TeamId = $row['team'];
                 $p2TeamId = $row2['team'];
 
-                $teamSelect = "SELECT full_name FROM Team WHERE id=$p1TeamId";
-                $teamSelect2 = "SELECT full_name FROM Team WHERE id=$p2TeamId";
+                $teamSelect = "SELECT t.full_name, t.name FROM Team t WHERE t.id=$p1TeamId";
+                $teamSelect2 = "SELECT t.full_name, t.name FROM Team t WHERE t.id=$p2TeamId";
 
                 $team1Result = $link->query($teamSelect);
                 $team2Result = $link->query($teamSelect2);
@@ -129,6 +126,9 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
 
                 $p1TeamName = $teamRow['full_name'];
                 $p2TeamName = $teamRow2['full_name'];
+
+                $p1TeamNickName = $teamRow['name'];
+                $p2TeamNickName = $teamRow2['name'];
 
                 $sql = "SELECT * FROM Stat WHERE player_id=$player1ID";
                 $sql2 = "SELECT * FROM Stat WHERE player_id=$player2ID";
@@ -143,6 +143,8 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
                         $p1Rpg = $row["reb"];
                         $p1Apg = $row["ast"];
                         $p1Fg = $row["fg_pct"];
+                        $p13Pt = $row["fg3_pct"];
+                        $p1Ft = $row["ft_pct"];
                     }
                 } 
                 if (mysqli_num_rows($result2) > 0) {  // check if any results were returned for p2
@@ -152,6 +154,8 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
                         $p2Rpg = $row2["reb"];
                         $p2Apg = $row2["ast"];
                         $p2Fg = $row2["fg_pct"];
+                        $p23Pt = $row2["fg3_pct"];
+                        $p2Ft = $row2["ft_pct"];
                     }
                     
                 } 
@@ -171,8 +175,13 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
                 fclose($file_handle);
             ?>
             <img src="<?php echo $image2Src ?>"class="img-fluid" alt="Player 1 image">
-            <h2> <?php echo $p1TeamName; ?> </h2>
-            <?php echo $player1Position?> 
+            <h2> <?php echo "$player1Position / $p1TeamName <br>"; ?> </h2>
+            <!-- <?php echo "$player1Position <br>"; ?>  -->
+            <?php 
+                $p1NickName = strtolower($p1TeamNickName);
+                $img1Var = "images/teamLogos/$p1NickName.png";
+            ?>
+        <img src="<?php echo $img1Var; ?>"class="img-fluid" alt="Player 1 team image" style="width: 100px; height: 100px;">
         </div>
         <div class="col-md-6">
         <div class="container">
@@ -224,8 +233,15 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
         <img src="<?php echo $image2Src ?>"class="img-fluid" alt="Player 2 image">
         <!-- add nba logo to the top right of the right player image -->
         <img src="nbaLogo.png" class="position-absolute top-0 end-0" style="width: 55px; height: 45px;">
-        <h2> <?php echo $p2TeamName; ?> </h2>
-        <?php echo $player2Position?> 
+        <h2> <?php echo "$player2Position / $p2TeamName <br>"; ?> </h2>
+        <!-- <?php 
+            echo "$player2Position <br>";
+        ?>  -->
+        <?php 
+            $p2NickName = strtolower($p2TeamNickName);
+            $img2Var = "images/teamLogos/$p2NickName.png";
+        ?>
+        <img src="<?php echo $img2Var; ?>"class="img-fluid" alt="Player 2 team image" style="width: 100px; height: 100px;">
     </div>
     </div>
     <div class="container d-flex justify-content-center pt-5">
@@ -240,72 +256,34 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
 
     <div class="container pt-5">
         <div class=" row collapse bg-dark text-white rounded" id="viewStats">
-            hi how are ya
-        </div>
-    </div>
-<!-- 
-    <div class="col-md-6">
-  <div class="container d-flex justify-content-center">
-    <a class="btn" style="margin-left: 20px;" data-bs-toggle="collapse" href="#viewStats" role="button" aria-expanded="false" aria-controls="viewStats">
-      View Players Shooting Statistics
-    </a>
-  </div>
-</div>
-<div class="container">
-  <div class="row">
-    <div class="collapse bg-dark text-black rounded" id="viewStats">
-      hi how are ya
-    </div>
-  </div>
-</div> -->
-</div>
-    <!-- <div class="container d-flex justify-content-center pt-5"> 
-        <div class="col-md-6">
-            <div class="container d-flex justify-content-center">
-                <a class="btn" style="margin-left: 20px;" data-bs-toggle="collapse" href= "#viewStats" role="button"aria-expanded="false" aria-controls="viewStats">
-                    View Players Shooting Statistics
-                </a>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row collapse bg-dark text-black round" id="viewStats">
-                hi how are ya
-            </div>
-        </div> -->
-    <!-- <div class="col-md-6">
-        <div class="container">
             <table class="table table-hover text-black ">
                 <thead>
                     <tr>
                         <th></th>
-                        <th><?php echo "$p1Name[0]  $p1Name[1]"; ?></th>
-                        <th><?php echo "$p2Name[0] $p2Name[1]"; ?></th>
+                        <th style="text-align:center">Statistics</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>PPG</td>
-                    <td><?php echo $p1ppg; ?></td>
-                    <td><?php echo $p2ppg; ?></td>
-                </tr>
-                <tr>
-                    <td>RPG</td>
-                    <td><?php echo $p1Rpg; ?></td>
-                    <td><?php echo $p2Rpg; ?></td>
-                </tr>
-                <tr>
-                    <td>APG</td>
-                    <td><?php echo $p1Apg; ?></td>
-                    <td><?php echo $p2Apg; ?></td>
-                </tr>
-                <tr>
-                    <td>FG%</td>
-                    <td><?php echo $p1Fg * 100; ?></td>
-                    <td><?php echo $p2Fg * 100; ?></td>
-                </tr>
+                    <tr>
+                        <td><?php echo $p1Ft * 100; ?></td>
+                        <td>FT%</td>
+                        <td><?php echo $p2Ft * 100; ?></td>
+                    </tr>
+                    <tr>
+                        <td><?php echo $p13Pt * 100; ?></td>
+                        <td>3PT</td>
+                        <td><?php echo $p23Pt * 100; ?></td>
+                    </tr>
+                    <tr>
+                        <td><?php echo $p12Pt; ?></td>
+                        <td>2PT</td>
+                        <td><?php echo $p22Pt; ?></td>
+                    </tr>
+                </tbody>
             </table>
         </div>
-    </div> -->
+    </div>
     </div>
 
     <!-- Bootstrap 4 JS dependencies -->
