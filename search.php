@@ -1,5 +1,15 @@
+#!/usr/local/bin/php
 <?php
 // TODO:
+$conn = new mysqli('mysql.cise.ufl.edu', 'v.torres1', '123456789abcd', 'NBASTATS');
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}else{
+    echo "Connection made<br>";
+    $sql = "select * from Player";
+    $result = $conn->query($sql);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,8 +22,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="styles.css">
-
+    
 </head>
 
 <body>
@@ -46,38 +55,35 @@
         <table class="table table-hover">
             <thead class="thead-dark">
                 <tr>
+                    <th scope="col">ID </th>
                     <th scope="col">First Name</th>
                     <th scope="col">Last Name</th>
+                    <th scope="col">Position </th>
+                    <th scope="col">Height Feet </th>
+                    <th scope="col">Height Inches </th>
+                    <th scope="col">Weight Pounds </th>
                     <th scope="col">Team</th>
+                    
                 </tr>
             </thead>
             <tbody id="playerTable">
-                <!-- Add your search results as table rows here -->
-                <tr>
-                    <td>LeBron</td>
-                    <td>James</td>
-                    <td>Los Angeles Lakers</td>
-                </tr>
-                <tr>
-                    <td>Stephen</td>
-                    <td>Curry</td>
-                    <td>Golden State Warriors</td>
-                </tr>
-                <tr>
-                    <td>Kevin</td>
-                    <td>Durant</td>
-                    <td>Brooklyn Nets</td>
-                </tr>
-                <tr>
-                    <td>James</td>
-                    <td>Harden</td>
-                    <td>Brooklyn Nets</td>
-                </tr>
-                <tr>
-                    <td>Damian</td>
-                    <td>Lillard</td>
-                    <td>Portland Trail Blazers</td>
-                </tr>
+                <?php
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . $row["id"] . "</td>";
+                        echo "<td>" . $row["first_name"] . "</td>";
+                        echo "<td>" . $row["last_name"] . "</td>";
+                        echo "<td>" . $row["position"] . "</td>";
+                        echo "<td>" . $row["height_feet"] . "</td>";
+                        echo "<td>" . $row["height_inches"] . "</td>";
+                        echo "<td>" . $row["weight_pounds"] . "</td>";
+                        echo "<td>" . $row["team"] . "</td>";
+                        echo "</tr>";
+                    }
+                }
+                ?>
+            </tbody>
             </tbody>
         </table>
     </div>
