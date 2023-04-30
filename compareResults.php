@@ -1,4 +1,10 @@
 #!/usr/local/bin/php
+<?php 
+if (empty($_POST['player1']) || empty($_POST['player2'])) { 
+    header('Location: compare.php?error=invalid_names');
+    exit; 
+} 
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,9 +56,6 @@
                 <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="search.php">Search Player</a>
             </li>
             <li class="nav-item">
@@ -66,9 +69,28 @@
     </nav>
 
     <div class="container pt-3 text-black rounded text-center">
-        <h2>Your NBA Player Comparison are shown below.</h2>
+        <h1>NBA Player Comparison</h1>
+        <!-- <p> You are currently viewing the yearly statistics for the two players you choose. </p> -->
     </div>
-
+    <div class="container justify-content-center pt-5 pb-0 text-center">
+        <div class="row">
+            <div class="col-md-12">
+                <a class="btn btn-dark" data-bs-toggle="collapse" href="#getInfo" role="button" aria-expanded="false" aria-controls="getInfo">
+                    Get Info
+                </a>
+            </div>
+        </div>
+        <div class="row collapse text-black rounded text-center pt-3" id="getInfo">
+            <div class="col-md-12">
+                <p> You are currently viewing the yearly statistics for the two players you choose. </p>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="container pt-5">
+        <div class=" row collapse text-black rounded" id="getInfo">
+            <p> You are currently viewing the yearly statistics for the two players you choose. </p>
+        </div>
+    </div> -->
     <!-- pt-5 adds padding to the top; helps separate nav bar from player comparison page -->
     <div class="d-flex justify-content-center pt-5"> 
         <?php
@@ -112,8 +134,8 @@
                 $p1TeamId = $row['team'];
                 $p2TeamId = $row2['team'];
 
-                $teamSelect = "SELECT full_name FROM Team WHERE id=$p1TeamId";
-                $teamSelect2 = "SELECT full_name FROM Team WHERE id=$p2TeamId";
+                $teamSelect = "SELECT t.full_name, t.name FROM Team t WHERE t.id=$p1TeamId";
+                $teamSelect2 = "SELECT t.full_name, t.name FROM Team t WHERE t.id=$p2TeamId";
 
                 $team1Result = $link->query($teamSelect);
                 $team2Result = $link->query($teamSelect2);
@@ -123,6 +145,9 @@
 
                 $p1TeamName = $teamRow['full_name'];
                 $p2TeamName = $teamRow2['full_name'];
+
+                $p1TeamNickName = $teamRow['name'];
+                $p2TeamNickName = $teamRow2['name'];
 
                 $sql = "SELECT * FROM Stat WHERE player_id=$player1ID";
                 $sql2 = "SELECT * FROM Stat WHERE player_id=$player2ID";
@@ -137,8 +162,34 @@
                         $p1Rpg = $row["reb"];
                         $p1Apg = $row["ast"];
                         $p1Fg = $row["fg_pct"];
+                        $p13Pt = $row["fg3_pct"];
+                        $p1Ft = $row["ft_pct"];
+                        $p1oreb = $row["oreb"];
+                        $p1dreb = $row["dreb"];
+                        $p1ast = $row["ast"];
+                        $p1stl = $row["stl"];
+                        $p1blk = $row["blk"];
+                        $p1pf = $row["pf"];
+                        $p1pts = $row["pts"];
                     }
                 } 
+                else {
+                    $p1ppg = 0;
+                    $p1Rpg = 0;
+                    $p1Apg = 0;
+                    $p1Fg = 0;
+                    $p13Pt = 0;
+                    $p1Ft = 0;
+                    $p1oreb = 0;
+                    $p1dreb = 0;
+                    $p1ast = 0;
+                    $p1stl = 0;
+                    $p1blk = 0;
+                    $p1pf = 0;
+                    $p1pts = 0;
+                    $p1TeamNickName = "N/A";
+                    $player1Position = "N/A";
+                }
                 if (mysqli_num_rows($result2) > 0) {  // check if any results were returned for p2
                     while($row2 = mysqli_fetch_assoc($result2)) {  // output data of each row
                         $player2_id = $row2["player_id"];
@@ -146,16 +197,67 @@
                         $p2Rpg = $row2["reb"];
                         $p2Apg = $row2["ast"];
                         $p2Fg = $row2["fg_pct"];
+                        $p23Pt = $row2["fg3_pct"];
+                        $p2Ft = $row2["ft_pct"];
+                        $p2oreb = $row2["oreb"];
+                        $p2dreb = $row2["dreb"];
+                        $p2ast = $row2["ast"];
+                        $p2stl = $row2["stl"];
+                        $p2blk = $row2["blk"];
+                        $p2pf = $row2["pf"];
+                        $p2pts = $row2["pts"];
                     }
-                    
                 } 
+                else {
+                    $p2ppg = 0;
+                    $p2Rpg = 0;
+                    $p2Apg = 0;
+                    $p2Fg = 0;
+                    $p23Pt = 0;
+                    $p2Ft = 0;
+                    $p2oreb = 0;
+                    $p2dreb = 0;
+                    $p2ast = 0;
+                    $p2stl = 0;
+                    $p2blk = 0;
+                    $p2pf = 0;
+                    $p2pts = 0;
+                    $p2TeamNickName = "N/A";
+                    $player2Position = "N/A";
+                }
             }
         ?>
         <!-- left image -->
         <div class="col-md-2 text-center">
-            <img src="playerImages/kevinDurant.png" class="img-fluid">
-            <h2> <?php echo $p1TeamName; ?> </h2>
-            <?php echo $player1Position?> 
+            <?php 
+                if ($p1TeamNickName == "N/A") {
+                    $image1Src = "playerImages/default.png";
+                }
+                else {
+                    $file_handle = fopen("images/nba_headshots.csv", "r");
+                    $tempName = strtolower($p1Name[0] . " " . $p1Name[1]);
+                    while (($row = fgetcsv($file_handle)) !== false) {
+                        if ($row[0] == $tempName) {  // check if the name in this row matches the user input
+                            $image1Src = $row[1];
+                            break;
+                        }
+                    }
+                    fclose($file_handle);
+                }
+            ?>
+            <img src="<?php echo $image1Src ?>"class="img-fluid" alt="Player 1 image">
+            <h2> <?php echo "$player1Position / $p1TeamName <br>"; ?> </h2>
+            <!-- <?php echo "$player1Position <br>"; ?>  -->
+            <?php 
+                $p1NickName = strtolower($p1TeamNickName);
+                if ($p1TeamNickName == "N/A") {
+                    $img1Var = "nbaLogo.png";
+                }
+                else {
+                    $img1Var = "images/teamLogos/$p1NickName.png";
+                }
+            ?>
+        <img src="<?php echo $img1Var; ?>"class="img-fluid" alt="Player 1 team image" style="width: 100px; height: 100px;">
         </div>
         <div class="col-md-6">
         <div class="container">
@@ -193,91 +295,111 @@
     </div>
     <!-- right image -->
     <div class="col-md-2 text-center">
-        <img src="playerImages/lebronJames.png" class="img-fluid">
+        <?php
+            if ($p2TeamNickName == "N/A") {
+                $image2Src = "playerImages/default.png";
+            }
+            else {
+                $file_handle = fopen("images/nba_headshots.csv", "r");
+                $tempName = strtolower($p2Name[0] . " " . $p2Name[1]);
+                while (($row = fgetcsv($file_handle)) !== false) {
+                    if ($row[0] == $tempName) {  // check if the name in this row matches the user input
+                        $image2Src = $row[1];
+                        break;
+                    }
+                }
+                fclose($file_handle);
+            }
+        ?>
+        <img src="<?php echo $image2Src ?>"class="img-fluid" alt="Player 2 image">
         <!-- add nba logo to the top right of the right player image -->
         <img src="nbaLogo.png" class="position-absolute top-0 end-0" style="width: 55px; height: 45px;">
-        <h2> <?php echo $p2TeamName; ?> </h2>
-        <?php echo $player2Position?> 
+        <h2> <?php echo "$player2Position / $p2TeamName <br>"; ?> </h2>
+        <!-- <?php 
+            echo "$player2Position <br>";
+        ?>  -->
+        <?php 
+            $p2NickName = strtolower($p2TeamNickName);
+            if ($p2TeamNickName == "N/A") {
+                $img2Var = "nbaLogo.png";
+            }
+            else {
+                $img2Var = "images/teamLogos/$p2NickName.png";
+            }
+        ?>
+        <img src="<?php echo $img2Var; ?>"class="img-fluid" alt="Player 2 team image" style="width: 100px; height: 100px;">
     </div>
     </div>
     <div class="container d-flex justify-content-center pt-5">
         <div class="row">
             <div class="col-md-6">
                 <a class="btn btn-dark" data-bs-toggle="collapse" href="#viewStats" role="button" aria-expanded="false" aria-controls="viewStats">
-                    View Players Shooting Statistics
+                    View Extensive Players Statistics
                 </a>
             </div>
         </div>
     </div>
 
     <div class="container pt-5">
-        <div class=" row collapse bg-dark text-white rounded" id="viewStats">
-            hi how are ya
-        </div>
-    </div>
-<!-- 
-    <div class="col-md-6">
-  <div class="container d-flex justify-content-center">
-    <a class="btn" style="margin-left: 20px;" data-bs-toggle="collapse" href="#viewStats" role="button" aria-expanded="false" aria-controls="viewStats">
-      View Players Shooting Statistics
-    </a>
-  </div>
-</div>
-<div class="container">
-  <div class="row">
-    <div class="collapse bg-dark text-black rounded" id="viewStats">
-      hi how are ya
-    </div>
-  </div>
-</div> -->
-</div>
-    <!-- <div class="container d-flex justify-content-center pt-5"> 
-        <div class="col-md-6">
-            <div class="container d-flex justify-content-center">
-                <a class="btn" style="margin-left: 20px;" data-bs-toggle="collapse" href= "#viewStats" role="button"aria-expanded="false" aria-controls="viewStats">
-                    View Players Shooting Statistics
-                </a>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row collapse bg-dark text-black round" id="viewStats">
-                hi how are ya
-            </div>
-        </div> -->
-    <!-- <div class="col-md-6">
-        <div class="container">
+        <div class=" row collapse text-black rounded" id="viewStats">
             <table class="table table-hover text-black ">
                 <thead>
                     <tr>
                         <th></th>
-                        <th><?php echo "$p1Name[0]  $p1Name[1]"; ?></th>
-                        <th><?php echo "$p2Name[0] $p2Name[1]"; ?></th>
+                        <th style="text-align:center">Player Averyage Game Statistics</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>PPG</td>
-                    <td><?php echo $p1ppg; ?></td>
-                    <td><?php echo $p2ppg; ?></td>
-                </tr>
-                <tr>
-                    <td>RPG</td>
-                    <td><?php echo $p1Rpg; ?></td>
-                    <td><?php echo $p2Rpg; ?></td>
-                </tr>
-                <tr>
-                    <td>APG</td>
-                    <td><?php echo $p1Apg; ?></td>
-                    <td><?php echo $p2Apg; ?></td>
-                </tr>
-                <tr>
-                    <td>FG%</td>
-                    <td><?php echo $p1Fg * 100; ?></td>
-                    <td><?php echo $p2Fg * 100; ?></td>
-                </tr>
+                    <tr>
+                        <td><?php echo $p1pts; ?></td>
+                        <td>PTS</td>
+                        <td><?php echo $p2pts; ?></td>
+                    </tr>
+                    <tr>
+                        <td><?php echo $p1Ft * 100; ?></td>
+                        <td>FT%</td>
+                        <td><?php echo $p2Ft * 100; ?></td>
+                    </tr>
+                    <tr>
+                        <td><?php echo $p13Pt * 100; ?></td>
+                        <td>3PT%</td>
+                        <td><?php echo $p23Pt * 100; ?></td>
+                    </tr>
+                    <tr>
+                        <td><?php echo $p1oreb; ?></td>
+                        <td>OREB</td>
+                        <td><?php echo $p2oreb; ?></td>
+                    </tr>
+                    <tr>
+                        <td><?php echo $p1dreb; ?></td>
+                        <td>DREB</td>
+                        <td><?php echo $p2dreb; ?></td>
+                    </tr>
+                    <tr>
+                        <td><?php echo $p1ast; ?></td>
+                        <td>AST</td>
+                        <td><?php echo $p2ast; ?></td>
+                    </tr>
+                    <tr>
+                        <td><?php echo $p1stl; ?></td>
+                        <td>STL</td>
+                        <td><?php echo $p2stl; ?></td>
+                    </tr>
+                    <tr>
+                        <td><?php echo $p1blk; ?></td>
+                        <td>BLK</td>
+                        <td><?php echo $p2blk; ?></td>
+                    </tr>
+                    <tr>
+                        <td><?php echo $p1pf; ?></td>
+                        <td>PF</td>
+                        <td><?php echo $p2pf; ?></td>
+                    </tr>
+                </tbody>
             </table>
         </div>
-    </div> -->
+    </div>
     </div>
 
     <!-- Bootstrap 4 JS dependencies -->
