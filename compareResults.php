@@ -58,8 +58,8 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
             <li class="nav-item">
                 <a class="nav-link" href="search.php">Search Player</a>
             </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="compare.php">Compare Players</a>
+            <li class="nav-item">
+                <a class="nav-link active" href="compare.php">Compare Players</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="explore.php">Explore Teams</a>
@@ -247,10 +247,6 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
                     }
                     fclose($file_handle);
                 }
-
-                if (empty($image1Src)) {
-                    $image1Src = "playerImages/default.png";
-                }
             ?>
             <img src="<?php echo $image1Src ?>"class="img-fluid" alt="Player 1 image">
             <h2> <?php echo "$player1Position / $p1TeamName <br>"; ?> </h2>
@@ -317,10 +313,6 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
                 }
                 fclose($file_handle);
             }
-
-            if (empty($image2Src)) {
-                $image2Src = "playerImages/default.png";
-            }
         ?>
         <img src="<?php echo $image2Src ?>"class="img-fluid" alt="Player 2 image">
         <!-- add nba logo to the top right of the right player image -->
@@ -347,30 +339,6 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
                 <a class="btn btn-dark" data-bs-toggle="collapse" href="#viewStats" role="button" aria-expanded="false" aria-controls="viewStats">
                     View Extensive Players Statistics
                 </a>
-            </div>
-        </div>
-    </div>
-
-    <div class="container d-flex justify-content-center pt-5">
-        <div class="row">
-            <div class="col-md-6">
-            <form action="histogram.php" method="post">
-                    <input type="hidden" name="p1Name0" value="<?php echo $p1Name[0]; ?>">
-                    <input type="hidden" name="p1Name1" value="<?php echo $p1Name[1]; ?>">
-                    <input type="hidden" name="p2Name0" value="<?php echo $p2Name[0]; ?>">
-                    <input type="hidden" name="p2Name1" value="<?php echo $p2Name[1]; ?>">
-                    <input type="hidden" name="p1ppg" value="<?php echo $p1ppg; ?>">
-                    <input type="hidden" name="p2ppg" value="<?php echo $p2ppg; ?>">
-                    <input type="hidden" name="p1Rpg" value="<?php echo $p1Rpg; ?>">
-                    <input type="hidden" name="p2Rpg" value="<?php echo $p2Rpg; ?>">
-                    <input type="hidden" name="p1Apg" value="<?php echo $p1Apg; ?>">
-                    <input type="hidden" name="p2Apg" value="<?php echo $p2Apg; ?>">
-                    <input type="hidden" name="p1Fg" value="<?php echo $p1Fg * 100; ?>">
-                    <input type="hidden" name="p2Fg" value="<?php echo $p2Fg * 100; ?>">
-                    <button type="submit" class="btn btn-dark">
-                        Histogram Comparison
-                    </button>
-                </form>
             </div>
         </div>
     </div>
