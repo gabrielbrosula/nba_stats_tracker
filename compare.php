@@ -12,6 +12,10 @@
 
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    
+    <!-- Group Project CSS -->
+    <link rel="stylesheet" href="styles.css">
+
     <title>Compare NBA Players</title>
 </head>
 <style>
@@ -40,20 +44,52 @@
     }
 
     .submit-btn {
-        background-color: #FF7F50;
+        background-color: #FD6100;
         color: #FFFFFF;
         border: none;
-        padding: 10px 30px;
+        border: 1px solid black;
+        /* padding: 10px 30px; */
         border-radius: 5px;
+        width: 200px;
+        cursor: pointer;
     }   
 
     .submit-btn i {
-        font-size: 30px;
+        font-size: 60px;
     }
+
+    input[type="text"] {
+        width: 350px;
+        height: 50px;
+        font-size: 18px;
+        border: 1px solid black;
+    }
+
+    .form-outline {
+        border-radius: 10px;
+    }
+    
+    .bg-black {
+        background-color: black;
+    }
+
+    .container {
+        height: 200px; /* adjust the height to your desired length */
+        /* padding: 50px; */
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+
+    h1 {
+        font-family: 'roboto-bold-headings';
+        color: #000000;
+        font-size: 75px;
+    }
+
 </style>
-<body>
+<body id="compare">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">NBA Stats Tracker</a>
+        <a class="navbar-brand" href="index.php">NBA Stats Tracker</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -61,9 +97,6 @@
             <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="search.php">Search Player</a>
@@ -80,56 +113,52 @@
 
     <div class="container p-3 my-5 text-black rounded text-center position-relative">
         <div class="float-right">
-            <img src="nbaLogo.png" style="width: 55px; height: 45px;">
+            <img src="nbaLogo.png" style="width: 60px; height: 55px;">
         </div>
-        <h2>Welcome to the NBA Player Comparison page.</h2>
+        <h1>NBA Player Comparison</h1>
     </div>
-    <!-- TODO: add in some type of validation to make sure that the spelling of the name is correct. Maybe some type of prepopulation -->
     <?php
-    // // Check if the user was redirected due to invalid player names
-    // if (isset($_GET['error']) && $_GET['error'] == 'invalid_names') {
-    //     echo "Please enter valid player names.";
-    // }
-
-    // Add the form here for the user to enter the player names
+        // check if the user was redirected due to invalid player names
+        if (isset($_GET['error']) && $_GET['error'] == 'invalid_names') {
+        $errorMessage = 'Please enter both player names.';
+        }
+        else {
+            $errorMessage = '';
+        }  
     ?>
-    <script>
-        $(document).ready(function(){
-            $("#player-search").autocomplete({
-                source: "autoFillPlayers.php",
-                minLength: 2, // minimum characters before search
-                select: function(event, ui) {
-                    $("#player-search").val(ui.item.value);
-                    return false;
-                }
-            });
-        });
-    </script>
-    <div class="container p-3 my-5 text-black rounded text-center">
-        <!-- <label for="player-search">Search for a player:</label>
-        <input type="text" id="player-search" name="player-search"> -->
+    <?php if ($errorMessage != ''): ?>
+        <div class="container text-white round p-3 my-5 text-center" style="border-radius: 10px; width: 400px;">
+            <div class="alert alert-danger"><?php echo $errorMessage; ?></div>
+        </div>
+    <?php endif; ?>
+
+    <div class="container text-white round p-3 my-5 text-center" style="border-radius: 10px;">
         <form action="compareResults.php" class="form-vertical ui-widget" method="post">
             <div class="row">
                 <div class="col mx-0"> 
-                    <!-- <input class="form-outline w-100 autocomplete" type="text" id="players" placeholder="Enter Player 1's first name..." value="" name="player1" required> -->
-                    <label for="player1">Player 1: </label>
-                    <input type="text" id="player1" name="player1" placeholder="Enter Player 1's name..." autocomplete="off">
+                    <!-- <label for="player1">Player 1: </label> -->
+                    <!-- <input type="text" id="player1" name="player1" placeholder="Enter Player 1's name..." autocomplete="off"> -->
+                    <input class="form-outline" type="text" id="player1" name="player1" placeholder="Enter Player 1's name..." autocomplete="off">
                     <div id="suggestions"></div>
                 </div>
 
                 <div class="col">  
-                    <!-- <input type="text" id="playerw" placeholder="Enter Player 2's first name..."value="" name="player2" required> -->
-                    <label for="player2">Player 2: </label>
-                    <input type="text" id="player2" name="player2" placeholder="Enter Player 2's name..."autocomplete="off">
+                    <!-- <label for="player2">Player 2: </label>
+                    <input type="text" id="player2" name="player2" placeholder="Enter Player 2's name..."autocomplete="off"> -->
+                    <input class="form-outline" type="text" id="player2" name="player2" placeholder="Enter Player 2's name..." autocomplete="off">
                 </div>
             </div>
                 <div class="row pt-5 justify-content-center">
                     <button type="submit" class="submit-btn">
                         <i class="fa fa-arrow-right"></i>
                     </button>
-                </div>  
+                </div>
+                <!-- <div class="row pt-5 justify-content-center"> 
+                    <img src="https://media.giphy.com/media/H75Uk3F2X1PATByXrk/giphy.gif">
+                </div> -->
         </form>
     </div>
+    
     <script>
         $(document).ready(function() {
             // set up autocomplete for player1 field
@@ -153,11 +182,8 @@
             });
         });
     </script>
-    <!-- TODO: add error cheecking for incorrect names entered -->
 
     <!-- Bootstrap 4 JS dependencies -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS-->
-    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>

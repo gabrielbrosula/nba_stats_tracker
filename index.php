@@ -29,9 +29,6 @@
                 <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="search.php">Search Player</a>
             </li>
             <li class="nav-item">
@@ -39,6 +36,9 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="explore.php">Explore Teams</a>
+            </li>
+            <li class="nav-item">
+                    <a class="nav-link" href="seasonStatsTable.php">View Season Stats</a>
             </li>
             </ul>
         </div>
