@@ -24,7 +24,7 @@
                 var teamid = id;
                 //var output = "";
                 const xmlhttp = new XMLHttpRequest();
-                xmlhttp.onload = function() {
+                xmlhttp.onreadystatechange = function() {
                     //obj = JSON.parse(this.responseText);
                     document.getElementById("players").innerHTML = this.responseText;
                 }
@@ -33,6 +33,11 @@
                 //document.getElementById("players").innerHTML = output;
                 //document.myForm.action = "delete.php";
 				//document.myForm.submit();
+            }
+        </script>
+        <script>
+            if ( window.history.replaceState ) {
+                window.history.replaceState( null, null, window.location.href );
             }
         </script>
         <style>
@@ -46,10 +51,20 @@
                 padding: 0.75rem;
                 vertical-align: top;
             }
+            .buttonE {
+                border: none;
+                color: white;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                margin: 4px 2px;
+                cursor: pointer;
+                background-color: transparent;
+            }
         </style>
     </head>
     <body>
-
+    <div class="bg container-fluid" style="background-image: url('images/basketball_img1.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center; background-attachment: fixed;">
     <!-- TODO: Add the links to the other page -->
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -59,8 +74,8 @@
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="search.php">Search Player</a>
@@ -69,14 +84,14 @@
                 <a class="nav-link" href="compare.php">Compare Players</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" href="explore.php">Explore Teams</a>
+                <a class="nav-link" href="explore.php">Explore Teams</a>
             </li>
             </ul>
         </div>
     </nav>
     <div class="container">
         <div class="jumbotron justify-content-center">
-        <form action='' name='myForm'>
+        <form action=''>
 		<?php
             $conn = new mysqli('mysql.cise.ufl.edu', 'v.torres1', '123456789abcd', 'NBASTATS');
 
@@ -99,8 +114,17 @@
                         $count = $count + 1;
                         $Teamid = $row["id"];
 				        $TeamName = $row["full_name"];
-                        echo "<td><button class='buttonE' onclick='showPlayers($Teamid)'>$TeamName</button></td>";
-                        if($count%5 == 0)
+                        $Name = $row["name"];
+                        $lowerName = strtolower($Name);
+                        if($lowerName == "trail blazers")
+                        {
+                            echo "<td><img src='images/teamLogos/trailBlazers.png' width='138' height='100'><button class='buttonE' onclick='showPlayers($Teamid)' type='button'>$TeamName</button></td>";                            
+                        }
+                        else
+                        {
+                            echo "<td><img src='images/teamLogos/$lowerName.png' width='138' height='100'><button class='buttonE' onclick='showPlayers($Teamid)' type='button'>$TeamName</button></td>";
+                        }
+                            if($count%5 == 0)
                         {
                             echo "</tr>";
                         }
@@ -113,7 +137,6 @@
         <div id="players">
         </div>
     </div>
+    </div>
     </body>
-    <footer>
-    </footer>
 </html>
