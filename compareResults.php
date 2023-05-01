@@ -342,6 +342,7 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
 
     <div class="container pt-5">
         <div class=" row collapse text-black rounded" id="viewStats">
+            <p> You are now viewing the statistics for your players on a gamely basis. </p>
             <table class="table table-hover text-black ">
                 <thead>
                     <tr>
