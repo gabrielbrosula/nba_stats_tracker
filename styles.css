@@ -1,0 +1,46 @@
+@font-face {
+    font-family: 'roboto-thin';
+    src: url('fonts/Roboto_Slab/static/RobotoSlab-Thin.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'roboto-txt';
+    src: url('fonts/Roboto_Slab/static/RobotoSlab-ExtraLight.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'roboto-bold-headings';
+    src: url('fonts/Roboto_Slab/static/RobotoSlab-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'roboto-regular-italic-headings';
+    src: url('fonts/Roboto_Condensed/RobotoCondensed-Regular.ttf') format('truetype');
+}
+HTML {
+    height: 100%;
+}
+
+body {
+    font-family: 'roboto-txt', 'sans-serif';
+}
+
+#home {
+    min-height: 100%;
+    background-image: url("images/basketball_img1.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+MAIN {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    margin-top: 56px;
+}
+.navbar.bg-dark {
+    background-color: rgba(0, 0, 0, .85) !important;
+}
+.jumbotron {
+    background-color: rgba(0, 0, 0, .85) !important;
+    color: white;
+}

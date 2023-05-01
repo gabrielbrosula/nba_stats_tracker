@@ -4,6 +4,14 @@
 Dont run this file. Gets data from balldontlieapi into txt scripts so that I can insert into the mysql through command line
 */
 function playerInserts(){
+  /*
+    CREATE TABLE PlayerImages (
+      first_name VARCHAR(30),
+      last_name VARCHAR(30),
+      img_url VARCHAR(255),
+      PRIMARY KEY (first_name, last_name)
+    );
+  */
     /*CREATE TABLE Player (
       id INT(10) NOT NULL,
       first_name VARCHAR(30),
@@ -14,6 +22,7 @@ function playerInserts(){
       weight_pounds INT(3),
       team INT(10),
       PRIMARY KEY (id)
+      
   );
   */
   $file = fopen('player_inserts.txt', 'a');
@@ -100,6 +109,7 @@ function teamInserts(){
 }
 
 function getAverages($pid){
+  
     /*
   CREATE TABLE Stat (
   player_id INT(10) NOT NULL,
