@@ -7,6 +7,7 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -15,7 +16,8 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <!-- Group Project CSS -->
     <link rel="stylesheet" href="styles.css">
@@ -27,27 +29,32 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
     body {
         background-image: none;
     }
-    td, th {
+
+    td,
+    th {
         text-align: center;
     }
+
     th {
         background-color: #FF7F50;
         color: white;
     }
+
     tr:not(:last-child) td {
         border-bottom: 1px solid black;
     }
+
     table {
         border-top: none;
         /* margin-top: 40px; */
     }
-
 </style>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="#">NBA Stats Tracker</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
@@ -92,31 +99,62 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
         </div>
     </div> -->
     <!-- pt-5 adds padding to the top; helps separate nav bar from player comparison page -->
-    <div class="d-flex justify-content-center pt-5"> 
+    <div class="d-flex justify-content-center pt-5">
         <?php
-            $player1= htmlspecialchars($_POST['player1']);
-            $p1Name = explode(' ', $player1); // split the first and last name by the space
-    
-            $player2= htmlspecialchars($_POST['player2']);
-            $p2Name = explode(' ', $player2); // split the first and last name by the space
-    
-            $link = new mysqli('mysql.cise.ufl.edu', 'v.torres1', '123456789abcd', 'NBASTATS');
-    
-            if ($link->connect_error) {
-                die("Connection failed: " . $link->connect_error);
-            }
-            foreach ($p1Name as &$name) {
-                $name = ucfirst($name);
-            }
+        $player1 = htmlspecialchars($_POST['player1']);
+        $p1Name = explode(' ', $player1); // split the first and last name by the space
+        
+        $player2 = htmlspecialchars($_POST['player2']);
+        $p2Name = explode(' ', $player2); // split the first and last name by the space
+        
+        $link = new mysqli('mysql.cise.ufl.edu', 'v.torres1', '123456789abcd', 'NBASTATS');
 
-            $sql = "SELECT p.first_name, p.last_name, p.id, p.team, p.position
+        if ($link->connect_error) {
+            die("Connection failed: " . $link->connect_error);
+        }
+        foreach ($p1Name as &$name) {
+            $name = ucfirst($name);
+        }
+
+        $sql = "SELECT p.first_name, p.last_name, p.id, p.team, p.position
             FROM Stat s JOIN Player p ON s.player_id = p.id 
             WHERE p.first_name = \"$p1Name[0]\" AND p.last_name = \"$p1Name[1]\"";
 
-            $sql2 = "SELECT p.first_name, p.last_name, p.id, p.team, p.position
+        $sql2 = "SELECT p.first_name, p.last_name, p.id, p.team, p.position
             FROM Stat s JOIN Player p ON s.player_id = p.id 
             WHERE p.first_name = \"$p2Name[0]\" AND p.last_name = \"$p2Name[1]\"";
-            
+
+
+        $result = $link->query($sql);
+        $result2 = $link->query($sql2);
+
+        if ($result->num_rows > 0) {
+            $row = mysqli_fetch_assoc($result); // get the player1 ID
+            $row2 = mysqli_fetch_assoc($result2); // get the player2 ID
+        
+            $player1ID = (int) $row['id'];
+            $player2ID = (int) $row2['id'];
+
+            $player1Position = $row['position'];
+            $player2Position = $row2['position'];
+
+            $p1TeamId = $row['team'];
+            $p2TeamId = $row2['team'];
+
+            $teamSelect = "SELECT full_name FROM Team WHERE id=$p1TeamId";
+            $teamSelect2 = "SELECT full_name FROM Team WHERE id=$p2TeamId";
+
+            $team1Result = $link->query($teamSelect);
+            $team2Result = $link->query($teamSelect2);
+
+            $teamRow = mysqli_fetch_assoc($team1Result);
+            $teamRow2 = mysqli_fetch_assoc($team2Result);
+
+            $p1TeamName = $teamRow['full_name'];
+            $p2TeamName = $teamRow2['full_name'];
+
+            $sql = "SELECT * FROM Stat WHERE player_id=$player1ID";
+            $sql2 = "SELECT * FROM Stat WHERE player_id=$player2ID";
 
             $result = $link->query($sql);
             $result2 = $link->query($sql2);
@@ -226,6 +264,7 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
                     $player2Position = "N/A";
                 }
             }
+        }
         ?>
         <!-- left image -->
         <div class="col-md-2 text-center">
@@ -260,37 +299,68 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
         <img src="<?php echo $img1Var; ?>"class="img-fluid" alt="Player 1 team image" style="width: 100px; height: 100px;">
         </div>
         <div class="col-md-6">
-        <div class="container">
-            <table class="table table-hover text-black ">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th><?php echo "$p1Name[0]  $p1Name[1]"; ?></th>
-                        <th><?php echo "$p2Name[0] $p2Name[1]"; ?></th>
-                    </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>PPG</td>
-                    <td><?php echo $p1ppg; ?></td>
-                    <td><?php echo $p2ppg; ?></td>
-                </tr>
-                <tr>
-                    <td>RPG</td>
-                    <td><?php echo $p1Rpg; ?></td>
-                    <td><?php echo $p2Rpg; ?></td>
-                </tr>
-                <tr>
-                    <td>APG</td>
-                    <td><?php echo $p1Apg; ?></td>
-                    <td><?php echo $p2Apg; ?></td>
-                </tr>
-                <tr>
-                    <td>FG%</td>
-                    <td><?php echo $p1Fg * 100; ?></td>
-                    <td><?php echo $p2Fg * 100; ?></td>
-                </tr>
-            </table>
+            <div class="container">
+                <table class="table table-hover text-black ">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>
+                                <?php echo "$p1Name[0]  $p1Name[1]"; ?>
+                            </th>
+                            <th>
+                                <?php echo "$p2Name[0] $p2Name[1]"; ?>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>PPG</td>
+                            <td>
+                                <?php echo $p1ppg; ?>
+                            </td>
+                            <td>
+                                <?php echo $p2ppg; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>RPG</td>
+                            <td>
+                                <?php echo $p1Rpg; ?>
+                            </td>
+                            <td>
+                                <?php echo $p2Rpg; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>APG</td>
+                            <td>
+                                <?php echo $p1Apg; ?>
+                            </td>
+                            <td>
+                                <?php echo $p2Apg; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>FG%</td>
+                            <td>
+                                <?php echo $p1Fg * 100; ?>
+                            </td>
+                            <td>
+                                <?php echo $p2Fg * 100; ?>
+                            </td>
+                        </tr>
+                </table>
+            </div>
+        </div>
+        <!-- right image -->
+        <div class="col-md-2 text-center">
+            <img src="playerImages/lebronJames.png" class="img-fluid">
+            <!-- add nba logo to the top right of the right player image -->
+            <img src="nbaLogo.png" class="position-absolute top-0 end-0" style="width: 55px; height: 45px;">
+            <h2>
+                <?php echo $p2TeamName; ?>
+            </h2>
+            <?php echo $player2Position ?>
         </div>
     </div>
     <!-- right image -->
@@ -336,6 +406,30 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
                 <a class="btn btn-dark" data-bs-toggle="collapse" href="#viewStats" role="button" aria-expanded="false" aria-controls="viewStats">
                     View Extensive Players Statistics
                 </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container d-flex justify-content-center pt-5">
+        <div class="row">
+            <div class="col-md-6">
+            <form action="histogram.php" method="post">
+                    <input type="hidden" name="p1Name0" value="<?php echo $p1Name[0]; ?>">
+                    <input type="hidden" name="p1Name1" value="<?php echo $p1Name[1]; ?>">
+                    <input type="hidden" name="p2Name0" value="<?php echo $p2Name[0]; ?>">
+                    <input type="hidden" name="p2Name1" value="<?php echo $p2Name[1]; ?>">
+                    <input type="hidden" name="p1ppg" value="<?php echo $p1ppg; ?>">
+                    <input type="hidden" name="p2ppg" value="<?php echo $p2ppg; ?>">
+                    <input type="hidden" name="p1Rpg" value="<?php echo $p1Rpg; ?>">
+                    <input type="hidden" name="p2Rpg" value="<?php echo $p2Rpg; ?>">
+                    <input type="hidden" name="p1Apg" value="<?php echo $p1Apg; ?>">
+                    <input type="hidden" name="p2Apg" value="<?php echo $p2Apg; ?>">
+                    <input type="hidden" name="p1Fg" value="<?php echo $p1Fg * 100; ?>">
+                    <input type="hidden" name="p2Fg" value="<?php echo $p2Fg * 100; ?>">
+                    <button type="submit" class="btn btn-dark">
+                        Histogram Comparison
+                    </button>
+                </form>
             </div>
         </div>
     </div>
@@ -404,10 +498,17 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
 
     <!-- Bootstrap 4 JS dependencies -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS-->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
 </html>
