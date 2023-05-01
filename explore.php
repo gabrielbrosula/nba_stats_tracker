@@ -1,4 +1,5 @@
 #!/usr/local/bin/php
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -21,14 +22,18 @@
         <title> NBA Stats Tracker </title>
         <script>
             function showPlayers(id){
+                console.log("showPlayers(" + id + ") called!");
                 var teamid = id;
                 //var output = "";
+                console.log("Creating XMLHttpRequest");
                 const xmlhttp = new XMLHttpRequest();
                 xmlhttp.onreadystatechange = function() {
                     //obj = JSON.parse(this.responseText);
                     document.getElementById("players").innerHTML = this.responseText;
                 }
+                console.log("Opening XMLHttpRequest");
                 xmlhttp.open("GET", "addPlayers.php?id=" + teamid);
+                console.log("Sending XMLHttpRequest");
                 xmlhttp.send(); 
                 //document.getElementById("players").innerHTML = output;
                 //document.myForm.action = "delete.php";
@@ -78,14 +83,20 @@
                 <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="#">About</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="search.php">Search Player</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="compare.php">Compare Players</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="explore.php">Explore Teams</a>
             </li>
+            <li class="nav-item">
+                    <a class="nav-link" href="seasonStatsTable.php">View Season Stats</a>
+                </li>
             </ul>
         </div>
     </nav>
