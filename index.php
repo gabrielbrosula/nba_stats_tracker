@@ -37,6 +37,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="explore.php">Explore Teams</a>
             </li>
+            <li class="nav-item">
+                    <a class="nav-link" href="seasonStatsTable.php">View Season Stats</a>
+            </li>
             </ul>
         </div>
     </nav>

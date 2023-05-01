@@ -5,7 +5,6 @@ $conn = new mysqli('mysql.cise.ufl.edu', 'v.torres1', '123456789abcd', 'NBASTATS
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 } else {
-    echo "Connection made<br>";
     $sql = "select * from Player";
     $result = $conn->query($sql);
 }
@@ -23,6 +22,9 @@ if ($conn->connect_error) {
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+    <!-- Group Project CSS -->
+    <link rel="stylesheet" href="styles.css">
+
 </head>
 
 <body>
@@ -35,16 +37,19 @@ if ($conn->connect_error) {
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="index.php">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" href="search.php">Search Player</a>
+                <a class="nav-link active" href="search.php">Search Player<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="compare.php">Compare Players</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="explore.php">Explore Teams</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="seasonStatsTable.php">View Season Stats</a>
             </li>
             </ul>
         </div>

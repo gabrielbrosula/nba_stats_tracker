@@ -1,4 +1,5 @@
 #!/usr/local/bin/php
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -21,14 +22,18 @@
         <title> NBA Stats Tracker </title>
         <script>
             function showPlayers(id){
+                console.log("showPlayers(" + id + ") called!");
                 var teamid = id;
                 //var output = "";
+                console.log("Creating XMLHttpRequest");
                 const xmlhttp = new XMLHttpRequest();
                 xmlhttp.onload = function() {
                     //obj = JSON.parse(this.responseText);
                     document.getElementById("players").innerHTML = this.responseText;
                 }
+                console.log("Opening XMLHttpRequest");
                 xmlhttp.open("GET", "addPlayers.php?id=" + teamid);
+                console.log("Sending XMLHttpRequest");
                 xmlhttp.send(); 
                 //document.getElementById("players").innerHTML = output;
                 //document.myForm.action = "delete.php";
@@ -50,8 +55,6 @@
     </head>
     <body>
 
-    <!-- TODO: Add the links to the other page -->
-
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="#">NBA Stats Tracker</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,14 +66,20 @@
                 <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="#">About</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="search.php">Search Player</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="compare.php">Compare Players</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="explore.php">Explore Teams</a>
+            <li class="nav-item active">
+                <a class="nav-link" href="explore.php">Explore Teams</a>
             </li>
+            <li class="nav-item">
+                    <a class="nav-link" href="seasonStatsTable.php">View Season Stats</a>
+                </li>
             </ul>
         </div>
     </nav>
