@@ -276,7 +276,6 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
                     }
                     fclose($file_handle);
                 }
-
                     
                 if (empty($image1Src)) {
                     $image1Src = "playerImages/default.png";
@@ -347,7 +346,7 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
                 }
                 fclose($file_handle);
             }
-
+            
             if (empty($image2Src)) {
                 $image2Src = "playerImages/default.png";
             }
