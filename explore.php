@@ -1,5 +1,6 @@
 #!/usr/local/bin/php
 
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -22,6 +23,7 @@
         <title> NBA Stats Tracker </title>
         <script>
             function showPlayers(id){
+
                 console.log("showPlayers(" + id + ") called!");
                 var teamid = id;
                 //var output = "";

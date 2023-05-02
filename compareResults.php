@@ -1,9 +1,12 @@
 #!/usr/local/bin/php
 <?php 
+session_start();
+
 if (empty($_POST['player1']) || empty($_POST['player2'])) { 
     header('Location: compare.php?error=invalid_names');
     exit; 
 } 
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -139,7 +142,7 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
 
                 $teamSelect = "SELECT t.full_name, t.name FROM Team t WHERE t.id=$p1TeamId";
                 $teamSelect2 = "SELECT t.full_name, t.name FROM Team t WHERE t.id=$p2TeamId";
-
+                
                 $team1Result = $link->query($teamSelect);
                 $team2Result = $link->query($teamSelect2);
 
@@ -149,9 +152,22 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
                 $p1TeamName = $teamRow['full_name'];
                 $p2TeamName = $teamRow2['full_name'];
 
+
+                $imgSelect = "SELECT img_url FROM PlayerImage WHERE player_id=$player1ID";
+                $imgSelect2 = "SELECT img_url FROM PlayerImage WHERE player_id=$player2ID";
+
+                $img1Result = $link->query($imgSelect);
+                $img2Result = $link->query($imgSelect2);
+
+                $imgRow = mysqli_fetch_assoc($img1Result);
+                $imgRow2 = mysqli_fetch_assoc($img2Result);
+
+                $p1ImgUrl = $imgRow['img_url'] ?  $imgRow['img_url'] : 'https://cdn-icons-png.flaticon.com/512/21/21104.png';
+                $p2ImgUrl = $imgRow2['img_url'] ?  $imgRow2['img_url'] : 'https://cdn-icons-png.flaticon.com/512/21/21104.png';
+
                 $p1TeamNickName = $teamRow['name'];
                 $p2TeamNickName = $teamRow2['name'];
-
+                
                 $sql = "SELECT * FROM Stat WHERE player_id=$player1ID";
                 $sql2 = "SELECT * FROM Stat WHERE player_id=$player2ID";
 
@@ -229,6 +245,19 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
                     $player2Position = "N/A";
                 }
             }
+            
+            //Add to session
+            if(!isset($_SESSION['comparisons'])){
+                $_SESSION['comparisons'] = array();
+            }
+
+            $comparisons = $_SESSION['comparisons'];
+
+            if(!in_array( [$player1, $player2], $comparisons)){
+                array_push($comparisons, [$player1, $player2]);
+            }
+            
+            $_SESSION['comparisons'] = $comparisons;
         ?>
         <!-- left image -->
         <div class="col-md-2 text-center">
@@ -343,7 +372,7 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
         </div>
     </div>
 
-    <div class="container pt-5">
+    <div class="container pt-5">ass="container">
         <div class=" row collapse text-black rounded" id="viewStats">
             <p> You are now viewing the statistics for your players on a gamely basis. </p>
             <table class="table table-hover text-black ">

@@ -1,4 +1,8 @@
 #!/usr/local/bin/php
+<?php 
+    session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +19,6 @@
     
     <!-- Group Project CSS -->
     <link rel="stylesheet" href="styles.css">
-
     <title>Compare NBA Players</title>
 </head>
 <style>
@@ -150,10 +153,58 @@
                     <button type="submit" class="submit-btn">
                         <i class="fa fa-arrow-right"></i>
                     </button>
-                </div>
+                </div>  
         </form>
     </div>
-    
+
+    <div class="container p-3 my-5 text-black rounded text-center" style="max-width:640px; margin-left:auto; margin-right:auto;">
+        <div style="display:flex; justify-content:space-between;">
+            <h5>Recent Comparisons:</h5>
+            <form action="clearSession.php" method="post">
+                <button type="submit">Clear History</button>
+            </form>
+        </div>
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Player 1</th>
+                    <th scope="col">Player 2</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php 
+                    $index =1;
+                    if(isset($_SESSION['comparisons'])){
+                        foreach($_SESSION['comparisons'] as $comparison){
+                            if($comparison[0] && $comparison[1]){
+                                echo '
+                                <form action="compareResults.php" method="POST">
+                                    <tr>
+                                        <th scope="row">' . $index . '</th>
+                                        <td>' . $comparison[0] . '</td>
+                                        <td >' . $comparison[1] . '</td>
+                                        <td>
+                                            <button type="submit" class="submit-btn-sm">
+                                                <i class="fa fa-arrow-right"></i>
+                                            </button>        
+                                        </td>
+                                        <input type="hidden" name="player1" value="' . $comparison[0] . '">
+                                        <input type="hidden" name="player2" value="' . $comparison[1] . '">            
+                                    </tr>
+                                </form>';
+                                $index++;
+                            }
+                        }
+                    }else{
+                        echo "<tr>No saved comparisons!</tr>";
+                    }
+                ?>
+            </tbody>
+        </table>
+    </div>
+      
     <script>
         $(document).ready(function() {
             // set up autocomplete for player1 field
