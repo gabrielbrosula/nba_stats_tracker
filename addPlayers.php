@@ -30,8 +30,12 @@
                 $resu = $re->fetch_assoc();
                 $firstName = $row["first_name"];
                 $lastName = $row["last_name"];
+                $player = "$firstName $lastName";
                 $url = $resu["img_url"];
-                echo "<td class=d><img src='$url' width='138' height='100'>$firstName $lastName</td>";
+                if($url == ""){
+                    $url="images/playerImages/default.png";
+                }
+                echo "<td class=d><img src='$url' width='138' height='100'><a href='search.php?searchInput=$playerid&playerName=$player'>$firstName $lastName</a></td>";
                 if($count%3 == 0)
                 {
                     echo "</tr>";
