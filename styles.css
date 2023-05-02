@@ -17,6 +17,8 @@
     font-family: 'roboto-regular-italic-headings';
     src: url('fonts/Roboto_Condensed/RobotoCondensed-Regular.ttf') format('truetype');
 }
+
+
 HTML {
     height: 100%;
 }
@@ -32,6 +34,16 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+
+#compare {
+    min-height: 100%;
+    background-image: url("images/basketball_img1.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
 MAIN {
     padding-top: 30px;
     padding-bottom: 30px;

@@ -13,6 +13,9 @@
         
     </head>
     <body id="home">
+
+
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="#">NBA Stats Tracker</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,18 +27,25 @@
                 <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="search.php">Search Player</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="compare.php">Compare Players</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="explore.php">Explore Teams</a>
+            </li>
+            <li class="nav-item">
+                    <a class="nav-link" href="seasonStatsTable.php">View Season Stats</a>
+            </li>
             </ul>
         </div>
     </nav>
+
+
     <!-- Rest of the webpage -->
+
+
     <!-- Background Image -->
     <main role="main" class="container">
         <div class="jumbotron">

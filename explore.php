@@ -1,4 +1,6 @@
 #!/usr/local/bin/php
+
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -21,18 +23,30 @@
         <title> NBA Stats Tracker </title>
         <script>
             function showPlayers(id){
+
+                console.log("showPlayers(" + id + ") called!");
                 var teamid = id;
                 //var output = "";
+                console.log("Creating XMLHttpRequest");
                 const xmlhttp = new XMLHttpRequest();
-                xmlhttp.onload = function() {
+                xmlhttp.onreadystatechange = function() {
                     //obj = JSON.parse(this.responseText);
                     document.getElementById("players").innerHTML = this.responseText;
                 }
+                console.log("Opening XMLHttpRequest");
                 xmlhttp.open("GET", "addPlayers.php?id=" + teamid);
+                console.log("Sending XMLHttpRequest");
                 xmlhttp.send(); 
-                //document.getElementById("players").innerHTML = output;
-                //document.myForm.action = "delete.php";
-				//document.myForm.submit();
+                scroll();
+            }
+            function scroll(){
+                var el = document.getElementById('fullScreen');
+                el.scrollIntoView(({
+                block: "end",
+                inline: "center",
+                behavior: "smooth",
+                alignToTop: false
+                }));
             }
         </script>
         <style>
@@ -46,10 +60,23 @@
                 padding: 0.75rem;
                 vertical-align: top;
             }
+            .buttonE {
+                border: none;
+                color: white;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                margin: 4px 2px;
+                cursor: pointer;
+                background-color: transparent;
+            }
+            .player {
+                height: 600px;
+            }
         </style>
     </head>
     <body>
-
+    <div class="bg container-fluid" style="background-image: url('images/basketball_img1.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center; background-attachment: fixed;">
     <!-- TODO: Add the links to the other page -->
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -59,11 +86,8 @@
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-            </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
+                <a class="nav-link" href="index.php">Home</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="search.php">Search Player</a>
@@ -71,12 +95,18 @@
             <li class="nav-item">
                 <a class="nav-link" href="compare.php">Compare Players</a>
             </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Explore Teams</a>
+            </li>
+            <li class="nav-item">
+                    <a class="nav-link" href="seasonStatsTable.php">View Season Stats</a>
+            </li>
             </ul>
         </div>
     </nav>
-    <div class="container">
+    <div class="container" id='fullScreen'>
         <div class="jumbotron justify-content-center">
-        <form action='' name='myForm'>
+        <form action=''>
 		<?php
             $conn = new mysqli('mysql.cise.ufl.edu', 'v.torres1', '123456789abcd', 'NBASTATS');
 
@@ -99,8 +129,17 @@
                         $count = $count + 1;
                         $Teamid = $row["id"];
 				        $TeamName = $row["full_name"];
-                        echo "<td><button class='buttonE' onclick='showPlayers($Teamid)'>$TeamName</button></td>";
-                        if($count%5 == 0)
+                        $Name = $row["name"];
+                        $lowerName = strtolower($Name);
+                        if($lowerName == "trail blazers")
+                        {
+                            echo "<td><img src='images/teamLogos/trailBlazers.png' width='138' height='100'><button class='buttonE' onclick='showPlayers($Teamid)' type='button'>$TeamName</button></td>";                            
+                        }
+                        else
+                        {
+                            echo "<td><img src='images/teamLogos/$lowerName.png' width='138' height='100'><button class='buttonE' onclick='showPlayers($Teamid)' type='button'>$TeamName</button></td>";
+                        }
+                            if($count%5 == 0)
                         {
                             echo "</tr>";
                         }
@@ -110,10 +149,9 @@
             ?>
             </form>
         </div>
-        <div id="players">
+        <div class="player" id="players">
         </div>
     </div>
+    </div>
     </body>
-    <footer>
-    </footer>
 </html>
