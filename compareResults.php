@@ -276,6 +276,10 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
                     }
                     fclose($file_handle);
                 }
+                    
+                if (empty($image1Src)) {
+                    $image1Src = "playerImages/default.png";
+                }
             ?>
             <img src="<?php echo $image1Src ?>"class="img-fluid" alt="Player 1 image">
             <h2> <?php echo "$player1Position / $p1TeamName <br>"; ?> </h2>
@@ -342,6 +346,10 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
                 }
                 fclose($file_handle);
             }
+            
+            if (empty($image2Src)) {
+                $image2Src = "playerImages/default.png";
+            }
         ?>
         <img src="<?php echo $image2Src ?>"class="img-fluid" alt="Player 2 image">
         <!-- add nba logo to the top right of the right player image -->
@@ -372,7 +380,7 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
         </div>
     </div>
 
-    <div class="container pt-5">ass="container">
+    <div class="container pt-5">
         <div class=" row collapse text-black rounded" id="viewStats">
             <p> You are now viewing the statistics for your players on a gamely basis. </p>
             <table class="table table-hover text-black ">

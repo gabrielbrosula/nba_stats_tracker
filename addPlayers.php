@@ -33,7 +33,7 @@
                 $player = "$firstName $lastName";
                 $url = $resu["img_url"];
                 if($url == ""){
-                    $url="images/playerImages/default.png";
+                    $url="playerImages/default.png";
                 }
                 echo "<td class=d><img src='$url' width='138' height='100'><a href='search.php?searchInput=$playerid&playerName=$player'>$firstName $lastName</a></td>";
                 if($count%3 == 0)
