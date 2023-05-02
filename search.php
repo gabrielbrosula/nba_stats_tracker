@@ -1,6 +1,7 @@
 #!/usr/local/bin/php
 <?php
 // TODO:
+
 $conn = new mysqli('mysql.cise.ufl.edu', 'v.torres1', '123456789abcd', 'NBASTATS');
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -8,6 +9,7 @@ if ($conn->connect_error) {
     $sql = "select * from Player";
     $result = $conn->query($sql);
 }
+
 
 ?>
 <!DOCTYPE html>
@@ -22,6 +24,7 @@ if ($conn->connect_error) {
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+
     <!-- Group Project CSS -->
     <link rel="stylesheet" href="styles.css">
 
@@ -30,6 +33,7 @@ if ($conn->connect_error) {
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="#">NBA Stats Tracker</a>
+
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -75,6 +79,8 @@ if ($conn->connect_error) {
             </thead>
             <tbody id="playerTable">
                 <?php
+                $explorePlayer = $_GET["searchInput"];
+                $playerFullName = $_GET["playerName"];
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
                         echo "<tr>";
@@ -127,6 +133,16 @@ if ($conn->connect_error) {
 
     <script>
         $(document).ready(function () {
+            if ("<?php echo $explorePlayer?>" != "")
+            {
+                console.log(<?php echo $explorePlayer?>);
+                document.getElementById('searchInput').setAttribute('value', "<?php echo $playerFullName?>");
+                let value = <?php echo $explorePlayer?>;
+                $("#playerTable tr").filter(function () {
+                        console.log($(this).text().toLowerCase().indexOf(value));
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) == 0)
+                    });
+            }
             $("#searchInput").on("keyup", function () {
                 let value = $(this).val().toLowerCase();
                 $("#playerTable tr").filter(function () {
@@ -135,6 +151,5 @@ if ($conn->connect_error) {
             });
         });
     </script>
-
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
         integrity="sha384-oBqDVmMxrn/ITSMAChbeE9eTc"></script>

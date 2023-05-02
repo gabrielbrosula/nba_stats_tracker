@@ -18,6 +18,7 @@
     src: url('fonts/Roboto_Condensed/RobotoCondensed-Regular.ttf') format('truetype');
 }
 
+
 HTML {
     height: 100%;
 }
@@ -28,18 +29,20 @@ body {
 
 #home {
     min-height: 100%;
-    background-image: url("assets/basketball_img1.jpg");
+    background-image: url("images/basketball_img1.jpg");
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
 }
 
+
 #compare {
     min-height: 100%;
-    background-image: url("images/bg2.svg");
+    background-image: url("images/basketball_img1.jpg");
     background-repeat: no-repeat;
     background-size: cover;
 }
+
 
 MAIN {
     padding-top: 30px;

@@ -1,9 +1,12 @@
 #!/usr/local/bin/php
 <?php 
+session_start();
+
 if (empty($_POST['player1']) || empty($_POST['player2'])) { 
     header('Location: compare.php?error=invalid_names');
     exit; 
 } 
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -58,8 +61,8 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
             <li class="nav-item">
                 <a class="nav-link" href="search.php">Search Player</a>
             </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="compare.php">Compare Players</a>
+            <li class="nav-item">
+                <a class="nav-link active" href="compare.php">Compare Players</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="explore.php">Explore Teams</a>
@@ -139,7 +142,7 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
 
                 $teamSelect = "SELECT t.full_name, t.name FROM Team t WHERE t.id=$p1TeamId";
                 $teamSelect2 = "SELECT t.full_name, t.name FROM Team t WHERE t.id=$p2TeamId";
-
+                
                 $team1Result = $link->query($teamSelect);
                 $team2Result = $link->query($teamSelect2);
 
@@ -149,9 +152,22 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
                 $p1TeamName = $teamRow['full_name'];
                 $p2TeamName = $teamRow2['full_name'];
 
+
+                $imgSelect = "SELECT img_url FROM PlayerImage WHERE player_id=$player1ID";
+                $imgSelect2 = "SELECT img_url FROM PlayerImage WHERE player_id=$player2ID";
+
+                $img1Result = $link->query($imgSelect);
+                $img2Result = $link->query($imgSelect2);
+
+                $imgRow = mysqli_fetch_assoc($img1Result);
+                $imgRow2 = mysqli_fetch_assoc($img2Result);
+
+                $p1ImgUrl = $imgRow['img_url'] ?  $imgRow['img_url'] : 'https://cdn-icons-png.flaticon.com/512/21/21104.png';
+                $p2ImgUrl = $imgRow2['img_url'] ?  $imgRow2['img_url'] : 'https://cdn-icons-png.flaticon.com/512/21/21104.png';
+
                 $p1TeamNickName = $teamRow['name'];
                 $p2TeamNickName = $teamRow2['name'];
-
+                
                 $sql = "SELECT * FROM Stat WHERE player_id=$player1ID";
                 $sql2 = "SELECT * FROM Stat WHERE player_id=$player2ID";
 
@@ -229,6 +245,19 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
                     $player2Position = "N/A";
                 }
             }
+            
+            //Add to session
+            if(!isset($_SESSION['comparisons'])){
+                $_SESSION['comparisons'] = array();
+            }
+
+            $comparisons = $_SESSION['comparisons'];
+
+            if(!in_array( [$player1, $player2], $comparisons)){
+                array_push($comparisons, [$player1, $player2]);
+            }
+            
+            $_SESSION['comparisons'] = $comparisons;
         ?>
         <!-- left image -->
         <div class="col-md-2 text-center">
@@ -248,6 +277,7 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
                     fclose($file_handle);
                 }
 
+                    
                 if (empty($image1Src)) {
                     $image1Src = "playerImages/default.png";
                 }
@@ -351,32 +381,9 @@ if (empty($_POST['player1']) || empty($_POST['player2'])) {
         </div>
     </div>
 
-    <div class="container d-flex justify-content-center pt-5">
-        <div class="row">
-            <div class="col-md-6">
-            <form action="histogram.php" method="post">
-                    <input type="hidden" name="p1Name0" value="<?php echo $p1Name[0]; ?>">
-                    <input type="hidden" name="p1Name1" value="<?php echo $p1Name[1]; ?>">
-                    <input type="hidden" name="p2Name0" value="<?php echo $p2Name[0]; ?>">
-                    <input type="hidden" name="p2Name1" value="<?php echo $p2Name[1]; ?>">
-                    <input type="hidden" name="p1ppg" value="<?php echo $p1ppg; ?>">
-                    <input type="hidden" name="p2ppg" value="<?php echo $p2ppg; ?>">
-                    <input type="hidden" name="p1Rpg" value="<?php echo $p1Rpg; ?>">
-                    <input type="hidden" name="p2Rpg" value="<?php echo $p2Rpg; ?>">
-                    <input type="hidden" name="p1Apg" value="<?php echo $p1Apg; ?>">
-                    <input type="hidden" name="p2Apg" value="<?php echo $p2Apg; ?>">
-                    <input type="hidden" name="p1Fg" value="<?php echo $p1Fg * 100; ?>">
-                    <input type="hidden" name="p2Fg" value="<?php echo $p2Fg * 100; ?>">
-                    <button type="submit" class="btn btn-dark">
-                        Histogram Comparison
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-
     <div class="container pt-5">
         <div class=" row collapse text-black rounded" id="viewStats">
+            <p> You are now viewing the statistics for your players on a gamely basis. </p>
             <table class="table table-hover text-black ">
                 <thead>
                     <tr>

@@ -1,5 +1,6 @@
 #!/usr/local/bin/php
 
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -22,6 +23,7 @@
         <title> NBA Stats Tracker </title>
         <script>
             function showPlayers(id){
+
                 console.log("showPlayers(" + id + ") called!");
                 var teamid = id;
                 //var output = "";
@@ -35,14 +37,16 @@
                 xmlhttp.open("GET", "addPlayers.php?id=" + teamid);
                 console.log("Sending XMLHttpRequest");
                 xmlhttp.send(); 
-                //document.getElementById("players").innerHTML = output;
-                //document.myForm.action = "delete.php";
-				//document.myForm.submit();
+                scroll();
             }
-        </script>
-        <script>
-            if ( window.history.replaceState ) {
-                window.history.replaceState( null, null, window.location.href );
+            function scroll(){
+                var el = document.getElementById('fullScreen');
+                el.scrollIntoView(({
+                block: "end",
+                inline: "center",
+                behavior: "smooth",
+                alignToTop: false
+                }));
             }
         </script>
         <style>
@@ -65,6 +69,9 @@
                 margin: 4px 2px;
                 cursor: pointer;
                 background-color: transparent;
+            }
+            .player {
+                height: 600px;
             }
         </style>
     </head>
@@ -89,7 +96,7 @@
                 <a class="nav-link" href="compare.php">Compare Players</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="explore.php">Explore Teams</a>
+                <a class="nav-link" href="#">Explore Teams</a>
             </li>
             <li class="nav-item">
                     <a class="nav-link" href="seasonStatsTable.php">View Season Stats</a>
@@ -97,7 +104,7 @@
             </ul>
         </div>
     </nav>
-    <div class="container">
+    <div class="container" id='fullScreen'>
         <div class="jumbotron justify-content-center">
         <form action=''>
 		<?php
@@ -142,7 +149,7 @@
             ?>
             </form>
         </div>
-        <div id="players">
+        <div class="player" id="players">
         </div>
     </div>
     </div>

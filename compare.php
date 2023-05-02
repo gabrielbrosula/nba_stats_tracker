@@ -1,4 +1,8 @@
 #!/usr/local/bin/php
+<?php 
+    session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +19,6 @@
     
     <!-- Group Project CSS -->
     <link rel="stylesheet" href="styles.css">
-
     <title>Compare NBA Players</title>
 </head>
 <style>
@@ -80,10 +83,9 @@
         padding-bottom: 50px;
     }
 
-    h1 {
+    h2 {
         font-family: 'roboto-bold-headings';
-        color: #000000;
-        font-size: 75px;
+        font-size: 55px;
     }
 
 </style>
@@ -107,15 +109,18 @@
             <li class="nav-item">
                 <a class="nav-link" href="explore.php">Explore Teams</a>
             </li>
+            <li class="nav-item">
+                    <a class="nav-link" href="seasonStatsTable.php">View Season Stats</a>
+            </li>
             </ul>
         </div>
     </nav>
-
-    <div class="container p-3 my-5 text-black rounded text-center position-relative">
+    <div class="jumbotron">
+    <div class="container p-3 my-5 text-white rounded text-center position-relative">
         <div class="float-right">
             <img src="nbaLogo.png" style="width: 60px; height: 55px;">
         </div>
-        <h1>NBA Player Comparison</h1>
+        <h2>NBA Player Comparison</h2>
     </div>
     <?php
         // check if the user was redirected due to invalid player names
@@ -136,15 +141,11 @@
         <form action="compareResults.php" class="form-vertical ui-widget" method="post">
             <div class="row">
                 <div class="col mx-0"> 
-                    <!-- <label for="player1">Player 1: </label> -->
-                    <!-- <input type="text" id="player1" name="player1" placeholder="Enter Player 1's name..." autocomplete="off"> -->
                     <input class="form-outline" type="text" id="player1" name="player1" placeholder="Enter Player 1's name..." autocomplete="off">
                     <div id="suggestions"></div>
                 </div>
 
                 <div class="col">  
-                    <!-- <label for="player2">Player 2: </label>
-                    <input type="text" id="player2" name="player2" placeholder="Enter Player 2's name..."autocomplete="off"> -->
                     <input class="form-outline" type="text" id="player2" name="player2" placeholder="Enter Player 2's name..." autocomplete="off">
                 </div>
             </div>
@@ -152,13 +153,58 @@
                     <button type="submit" class="submit-btn">
                         <i class="fa fa-arrow-right"></i>
                     </button>
-                </div>
-                <!-- <div class="row pt-5 justify-content-center"> 
-                    <img src="https://media.giphy.com/media/H75Uk3F2X1PATByXrk/giphy.gif">
-                </div> -->
+                </div>  
         </form>
     </div>
-    
+
+    <div class="container p-3 my-5 text-black rounded text-center" style="max-width:640px; margin-left:auto; margin-right:auto;">
+        <div style="display:flex; justify-content:space-between;">
+            <h5>Recent Comparisons:</h5>
+            <form action="clearSession.php" method="post">
+                <button type="submit">Clear History</button>
+            </form>
+        </div>
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Player 1</th>
+                    <th scope="col">Player 2</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php 
+                    $index =1;
+                    if(isset($_SESSION['comparisons'])){
+                        foreach($_SESSION['comparisons'] as $comparison){
+                            if($comparison[0] && $comparison[1]){
+                                echo '
+                                <form action="compareResults.php" method="POST">
+                                    <tr>
+                                        <th scope="row">' . $index . '</th>
+                                        <td>' . $comparison[0] . '</td>
+                                        <td >' . $comparison[1] . '</td>
+                                        <td>
+                                            <button type="submit" class="submit-btn-sm">
+                                                <i class="fa fa-arrow-right"></i>
+                                            </button>        
+                                        </td>
+                                        <input type="hidden" name="player1" value="' . $comparison[0] . '">
+                                        <input type="hidden" name="player2" value="' . $comparison[1] . '">            
+                                    </tr>
+                                </form>';
+                                $index++;
+                            }
+                        }
+                    }else{
+                        echo "<tr>No saved comparisons!</tr>";
+                    }
+                ?>
+            </tbody>
+        </table>
+    </div>
+      
     <script>
         $(document).ready(function() {
             // set up autocomplete for player1 field
@@ -186,5 +232,6 @@
     <!-- Bootstrap 4 JS dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    </div>
 </body>
 </html>
