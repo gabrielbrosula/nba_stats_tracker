@@ -75,6 +75,8 @@ if ($conn->connect_error) {
             </thead>
             <tbody id="playerTable">
                 <?php
+                $explorePlayer = $_GET["searchInput"];
+                $playerFullName = $_GET["playerName"];
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
                         echo "<tr>";
@@ -127,6 +129,16 @@ if ($conn->connect_error) {
 
     <script>
         $(document).ready(function () {
+            if ("<?php echo $explorePlayer?>" != "")
+            {
+                console.log(<?php echo $explorePlayer?>);
+                document.getElementById('searchInput').setAttribute('value', "<?php echo $playerFullName?>");
+                let value = <?php echo $explorePlayer?>;
+                $("#playerTable tr").filter(function () {
+                        console.log($(this).text().toLowerCase().indexOf(value));
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) == 0)
+                    });
+            }
             $("#searchInput").on("keyup", function () {
                 let value = $(this).val().toLowerCase();
                 $("#playerTable tr").filter(function () {
